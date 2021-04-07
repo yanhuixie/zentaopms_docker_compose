@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  web:
+#如果你想在yml里面定义build，就不需要image，反之亦然
+#    build: .
+    image: zentaopms:latest
+    container_name: zentaopms
+#这是我的外部mariadb，根据自己的情况使用
+    external_links:
+      - mariadb-10
+    networks:
+      - default
+    restart: always
+    ports:
+      - 9015:80
+    volumes:
+      - ./zentaopms:/var/www/zentaopms
+
+#我将zentaopms的容器加入到为mariadb定义的网络
+networks:
+  default:
+    external:
+      name: mariadb_default
